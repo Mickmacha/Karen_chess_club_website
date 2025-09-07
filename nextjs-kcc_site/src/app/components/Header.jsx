@@ -1,79 +1,203 @@
-// components/Header.jsx
-import { useState } from 'react'
+"use client"
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState('hero')
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
+      
+      // Update active section based on scroll position
+      const sections = ['hero', 'about', 'programs', 'contact']
+      const currentSection = sections.find(section => {
+        const element = document.getElementById(section)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          return rect.top <= 100 && rect.bottom >= 100
+        }
+        return false
+      })
+      if (currentSection) setActiveSection(currentSection)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+    setIsMenuOpen(false)
+  }
+
+  const navItems = [
+    { id: 'hero', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'programs', label: 'Programs' },
+    { id: 'contact', label: 'Contact' }
+  ]
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <header className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+      scrolled 
+        ? 'bg-white/90 backdrop-blur-lg shadow-lg border-b border-gray-200/20' 
+        : 'bg-transparent'
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
-              <span className="text-orange-500 font-bold text-xl">♔</span>
+          <button 
+            onClick={() => scrollToSection('hero')} 
+            className="flex items-center space-x-3 group transform hover:scale-105 transition-all duration-300"
+          >
+            <div className="relative">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:shadow-orange-500/25 transition-all duration-300">
+                <span className="text-white font-bold text-2xl transform group-hover:rotate-12 transition-transform duration-300">♔</span>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-black">Karen Chess Club</h1>
-              <p className="text-sm text-gray-600">Strategic Excellence</p>
+              <h1 className={`text-2xl font-bold transition-colors duration-300 ${
+                scrolled ? 'text-black' : 'text-white'
+              } group-hover:text-orange-500`}>
+                Karen Chess Club
+              </h1>
+              <p className={`text-sm transition-colors duration-300 ${
+                scrolled ? 'text-gray-600' : 'text-gray-300'
+              }`}>
+                Strategic Excellence
+              </p>
             </div>
-          </Link>
+          </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
-              Home
-            </Link>
-            <Link href="/about" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
-              About
-            </Link>
-            <Link href="/programs" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
-              Programs
-            </Link>
-            <Link href="/events" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
-              Events
-            </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
-              Contact
+          <nav className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`relative font-medium transition-all duration-300 px-4 py-2 rounded-lg group ${
+                  activeSection === item.id
+                    ? scrolled 
+                      ? 'text-orange-500' 
+                      : 'text-orange-400'
+                    : scrolled
+                      ? 'text-gray-700 hover:text-orange-500'
+                      : 'text-gray-300 hover:text-orange-400'
+                }`}
+              >
+                <span className="relative z-10">{item.label}</span>
+                {activeSection === item.id && (
+                  <div className="absolute inset-0 bg-orange-500/10 rounded-lg animate-pulse"></div>
+                )}
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-orange-500 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+              </button>
+            ))}
+            
+            <Link 
+              href="/blog" 
+              className={`font-medium transition-all duration-300 px-4 py-2 rounded-lg group relative ${
+                scrolled 
+                  ? 'text-gray-700 hover:text-orange-500' 
+                  : 'text-gray-300 hover:text-orange-400'
+              }`}
+            >
+              <span className="relative z-10">Blog</span>
+              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-orange-500 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
             </Link>
           </nav>
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Link href="/join" className="bg-orange-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors">
-              Join Club
-            </Link>
+            <button 
+              onClick={() => scrollToSection('contact')} 
+              className="relative bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-xl font-medium hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-orange-500/25 group overflow-hidden"
+            >
+              <span className="relative z-10">Join Club</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            </button>
           </div>
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100/10 transition-colors duration-200"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <div className="w-6 h-6 flex flex-col justify-center">
-              <span className={`block h-0.5 bg-black transition-all ${isMenuOpen ? 'rotate-45 translate-y-1' : 'mb-1'}`}></span>
-              <span className={`block h-0.5 bg-black transition-all ${isMenuOpen ? 'opacity-0' : 'mb-1'}`}></span>
-              <span className={`block h-0.5 bg-black transition-all ${isMenuOpen ? '-rotate-45 -translate-y-1' : ''}`}></span>
+            <div className="w-6 h-6 flex flex-col justify-center space-y-1">
+              <span className={`block h-0.5 bg-current transition-all duration-300 ${
+                scrolled ? 'text-black' : 'text-white'
+              } ${
+                isMenuOpen ? 'rotate-45 translate-y-1.5' : ''
+              }`}></span>
+              <span className={`block h-0.5 bg-current transition-all duration-300 ${
+                scrolled ? 'text-black' : 'text-white'
+              } ${
+                isMenuOpen ? 'opacity-0' : ''
+              }`}></span>
+              <span className={`block h-0.5 bg-current transition-all duration-300 ${
+                scrolled ? 'text-black' : 'text-white'
+              } ${
+                isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
+              }`}></span>
             </div>
           </button>
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 py-4">
-            <div className="flex flex-col space-y-4">
-              <Link href="/" className="text-gray-700 hover:text-orange-500 font-medium">Home</Link>
-              <Link href="/about" className="text-gray-700 hover:text-orange-500 font-medium">About</Link>
-              <Link href="/programs" className="text-gray-700 hover:text-orange-500 font-medium">Programs</Link>
-              <Link href="/events" className="text-gray-700 hover:text-orange-500 font-medium">Events</Link>
-              <Link href="/contact" className="text-gray-700 hover:text-orange-500 font-medium">Contact</Link>
-              <Link href="/join" className="bg-orange-500 text-white px-6 py-2 rounded-lg font-medium text-center">
-                Join Club
+        <div className={`md:hidden transition-all duration-300 ease-in-out ${
+          isMenuOpen 
+            ? 'max-h-screen opacity-100 pb-6' 
+            : 'max-h-0 opacity-0 overflow-hidden'
+        }`}>
+          <div className="border-t border-gray-200/20 pt-4">
+            <div className="flex flex-col space-y-2">
+              {navItems.map((item, index) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`text-left px-4 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 ${
+                    activeSection === item.id
+                      ? scrolled 
+                        ? 'text-orange-500 bg-orange-500/10' 
+                        : 'text-orange-400 bg-orange-400/10'
+                      : scrolled
+                        ? 'text-gray-700 hover:text-orange-500 hover:bg-gray-100/50'
+                        : 'text-gray-300 hover:text-orange-400 hover:bg-white/10'
+                  }`}
+                  style={{
+                    animationDelay: `${index * 100}ms`
+                  }}
+                >
+                  {item.label}
+                </button>
+              ))}
+              
+              <Link 
+                href="/blog" 
+                className={`px-4 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 ${
+                  scrolled 
+                    ? 'text-gray-700 hover:text-orange-500 hover:bg-gray-100/50' 
+                    : 'text-gray-300 hover:text-orange-400 hover:bg-white/10'
+                }`}
+              >
+                Blog
               </Link>
+              
+              <button 
+                onClick={() => scrollToSection('contact')} 
+                className="mt-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-xl font-medium text-center transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
+              >
+                Join Club
+              </button>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </header>
   )

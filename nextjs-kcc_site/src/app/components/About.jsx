@@ -1,4 +1,4 @@
-// components/About.jsx
+"use client";
 export default function About() {
   return (
     <section className="py-20 bg-white">

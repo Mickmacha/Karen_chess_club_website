@@ -1,8 +1,14 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Chess Club Custom Colors */
+  --color-chess-gold: #f4a261;
+  --color-chess-orange: #ff8c42;
+  --color-chess-dark: #1a1a1a;
 }
 
 @theme inline {
@@ -10,6 +16,11 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Custom chess colors for Tailwind */
+  --color-chess-gold: var(--color-chess-gold);
+  --color-chess-orange: var(--color-chess-orange);
+  --color-chess-dark: var(--color-chess-dark);
 }
 
 @media (prefers-color-scheme: dark) {
