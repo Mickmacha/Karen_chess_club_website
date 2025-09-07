@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -56,19 +57,42 @@ export default function Header() {
             onClick={() => scrollToSection('hero')} 
             className="flex items-center space-x-3 group transform hover:scale-105 transition-all duration-300"
           >
+            {/* Logo Container with Multiple Sizes */}
             <div className="relative">
-              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:shadow-orange-500/25 transition-all duration-300">
-                <span className="text-white font-bold text-2xl transform group-hover:rotate-12 transition-transform duration-300">♔</span>
+              {/* Desktop Logo */}
+              <div className="hidden sm:block relative w-12 h-12 rounded-xl shadow-lg group-hover:shadow-xl group-hover:shadow-orange-500/25 transition-all duration-300 overflow-hidden">
+                <Image
+                  src="/logo-256.png" // Your optimized logo
+                  alt="Karen Chess Club Logo"
+                  width={256}
+                  height={256}
+                  className="object-contain transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-300"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-amber-600/20 rounded-xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl blur opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+              
+              {/* Mobile Logo */}
+              <div className="block sm:hidden relative w-10 h-10 rounded-lg shadow-md group-hover:shadow-lg transition-all duration-300 overflow-hidden">
+                <Image
+                  src="/logo-64.png" // Smaller version for mobile
+                  alt="Karen Chess Club Logo"
+                  width={64}
+                  height={64}
+                  className="object-contain transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-300"
+                  priority
+                />
+              </div>
             </div>
+            
+            {/* Text */}
             <div>
-              <h1 className={`text-2xl font-bold transition-colors duration-300 ${
+              <h1 className={`text-xl sm:text-2xl font-bold transition-colors duration-300 ${
                 scrolled ? 'text-black' : 'text-white'
               } group-hover:text-orange-500`}>
                 Karen Chess Club
               </h1>
-              <p className={`text-sm transition-colors duration-300 ${
+              <p className={`text-xs sm:text-sm transition-colors duration-300 ${
                 scrolled ? 'text-gray-600' : 'text-gray-300'
               }`}>
                 Strategic Excellence
