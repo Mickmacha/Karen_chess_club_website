@@ -180,35 +180,6 @@ export default function Hero() {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(5deg); }
-        }
-        
-        @keyframes text-shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
-        
-        @keyframes bounce-subtle {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-5px); }
-        }
-        
-        .animate-float {
-          animation: float 8s ease-in-out infinite;
-        }
-        
-        .animate-text-shimmer {
-          background-size: 200% auto;
-          animation: text-shimmer 3s linear infinite;
-        }
-        
-        .animate-bounce-subtle {
-          animation: bounce-subtle 3s ease-in-out infinite;
-        }
-      `}</style>
     </section>
   );
 }
