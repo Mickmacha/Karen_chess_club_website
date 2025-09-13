@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { type SanityDocument } from "next-sanity";
 import { client } from "@/sanity/client";
-import Layout from '../../components/Layout';
-
+import Layout from '../app/components/Layout';
+/*
+  The import path for Layout should be updated to reflect its actual location.
+  Since Layout exists in `src/app/components`, use the correct relative path:
+*/
 const ALL_POSTS_QUERY = `*[
   _type == "post"
   && defined(slug.current)

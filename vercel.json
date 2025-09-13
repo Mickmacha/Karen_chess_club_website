@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "nextjs-kcc_site/package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "studio-kcc_site/package.json", 
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/studio/(.*)",
+      "dest": "/studio-kcc_site/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/nextjs-kcc_site/$1"
+    }
+  ]
+}

@@ -24,8 +24,7 @@ const options = { next: { revalidate: 60 } };
 export default async function GalleryPage() {
   const galleryImages = await client.fetch(GALLERY_QUERY, {}, options);
 
-  // Transform Sanity data to match Gallery component expectations
-  const transformedImages = galleryImages.map(item => ({
+  const transformedImages = galleryImages.map((item) => ({
     _id: item._id,
     title: item.title,
     alt: item.alt || item.title,
@@ -44,4 +43,3 @@ export default async function GalleryPage() {
     </Layout>
   );
 }
-

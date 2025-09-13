@@ -4,7 +4,8 @@ import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
 import { notFound } from "next/navigation";
 import Layout from "../components/Layout";
-
+import Link from 'next/link';
+import Image  from 'next/image';
 const POST_QUERY = `*[
   _type == "post" &&
   slug.current == $slug
@@ -75,10 +76,12 @@ export default async function PostPage({
           {/* Featured Image */}
           {postImageUrl && (
             <div className="mb-12">
-              <img
-                src={postImageUrl}
-                alt={post.title || "Post image"}
-                className="w-full rounded-xl shadow-lg"
+              <Image
+              src={postImageUrl}
+              alt={post.title || "Post image"}
+              width={550}
+              height={310}
+              className="w-full rounded-xl shadow-lg"
               />
             </div>
           )}
@@ -87,7 +90,7 @@ export default async function PostPage({
           <div className="prose prose-lg max-w-none">
             {post.body ? (
               // If you're using Portable Text, you'll need a renderer here
-              // For now, assuming it's a simple text field
+                // For now, assuming it's a simple text field
               <div className="whitespace-pre-wrap text-gray-800 leading-relaxed">
                 {typeof post.body === 'string' ? post.body : JSON.stringify(post.body)}
               </div>
@@ -98,12 +101,12 @@ export default async function PostPage({
 
           {/* Back to Blog */}
           <div className="mt-16 pt-8 border-t border-gray-200">
-            <a 
+            <Link 
               href="/blog" 
               className="inline-flex items-center text-orange-500 hover:text-orange-600 font-medium transition-colors"
             >
               ← Back to Blog
-            </a>
+            </Link>
           </div>
         </div>
       </article>
