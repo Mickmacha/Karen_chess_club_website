@@ -153,7 +153,7 @@ export default function Contact() {
     <section 
       ref={sectionRef}
       id="contact" 
-      className="py-20 bg-gradient-to-br from-slate-900 via-slate-800 to-black text-white relative overflow-hidden"
+      className="py-35 text-white relative overflow-hidden"
     >
       {/* Background Elements */}
       <div className="absolute inset-0">

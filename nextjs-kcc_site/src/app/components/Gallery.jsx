@@ -28,54 +28,54 @@ export default function Gallery({ images = [] }) {
 
   // Sample data structure - replace with your Sanity data
   const sampleImages = [
-    {
-      _id: '1',
-      title: 'Championship Tournament 2024',
-      alt: 'Players competing in championship',
-      category: 'tournaments',
-      imageUrl: '/api/placeholder/400/300', // Replace with urlFor(image) from Sanity
-      description: 'Intense moments from our annual championship tournament'
-    },
-    {
-      _id: '2',
-      title: 'Youth Training Session',
-      alt: 'Kids learning chess',
-      category: 'training',
-      imageUrl: '/api/placeholder/400/300',
-      description: 'Young minds developing strategic thinking skills'
-    },
-    {
-      _id: '3',
-      title: 'Club Meeting',
-      alt: 'Members discussing strategies',
-      category: 'events',
-      imageUrl: '/api/placeholder/400/300',
-      description: 'Weekly club meeting and strategy discussion'
-    },
-    {
-      _id: '4',
-      title: 'Beginner Workshop',
-      alt: 'Teaching basic chess moves',
-      category: 'training',
-      imageUrl: '/api/placeholder/400/300',
-      description: 'Introduction to chess fundamentals workshop'
-    },
-    {
-      _id: '5',
-      title: 'Victory Celebration',
-      alt: 'Winners celebrating',
-      category: 'events',
-      imageUrl: '/api/placeholder/400/300',
-      description: 'Celebrating our regional tournament victory'
-    },
-    {
-      _id: '6',
-      title: 'Simultaneous Exhibition',
-      alt: 'Master playing multiple games',
-      category: 'events',
-      imageUrl: '/api/placeholder/400/300',
-      description: 'Chess master playing 20 games simultaneously'
-    }
+    // {
+    //   _id: '1',
+    //   title: 'Championship Tournament 2024',
+    //   alt: 'Players competing in championship',
+    //   category: 'tournaments',
+    //   imageUrl: '/api/placeholder/400/300', // Replace with urlFor(image) from Sanity
+    //   description: 'Intense moments from our annual championship tournament'
+    // },
+    // {
+    //   _id: '2',
+    //   title: 'Youth Training Session',
+    //   alt: 'Kids learning chess',
+    //   category: 'training',
+    //   imageUrl: '/api/placeholder/400/300',
+    //   description: 'Young minds developing strategic thinking skills'
+    // },
+    // {
+    //   _id: '3',
+    //   title: 'Club Meeting',
+    //   alt: 'Members discussing strategies',
+    //   category: 'events',
+    //   imageUrl: '/api/placeholder/400/300',
+    //   description: 'Weekly club meeting and strategy discussion'
+    // },
+    // {
+    //   _id: '4',
+    //   title: 'Beginner Workshop',
+    //   alt: 'Teaching basic chess moves',
+    //   category: 'training',
+    //   imageUrl: '/api/placeholder/400/300',
+    //   description: 'Introduction to chess fundamentals workshop'
+    // },
+    // {
+    //   _id: '5',
+    //   title: 'Victory Celebration',
+    //   alt: 'Winners celebrating',
+    //   category: 'events',
+    //   imageUrl: '/api/placeholder/400/300',
+    //   description: 'Celebrating our regional tournament victory'
+    // },
+    // {
+    //   _id: '6',
+    //   title: 'Simultaneous Exhibition',
+    //   alt: 'Master playing multiple games',
+    //   category: 'events',
+    //   imageUrl: '/api/placeholder/400/300',
+    //   description: 'Chess master playing 20 games simultaneously'
+    // }
   ];
 
   const galleryImages = images.length > 0 ? images : sampleImages;
@@ -105,7 +105,7 @@ export default function Gallery({ images = [] }) {
     <section 
       ref={sectionRef}
       id="gallery"
-      className="py-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden"
+      className="py-35 text-white relative overflow-hidden"
     >
       {/* Background Elements */}
       <div className="absolute inset-0">

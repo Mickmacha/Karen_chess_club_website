@@ -34,7 +34,7 @@ export default function About() {
   }, []);
 
   return (
-    <section id="about" className="relative py-32 bg-gradient-to-br from-slate-900 via-slate-800 to-black text-white overflow-hidden">
+    <section id="about" className="relative py-32 text-white overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Floating Chess Pieces */}
