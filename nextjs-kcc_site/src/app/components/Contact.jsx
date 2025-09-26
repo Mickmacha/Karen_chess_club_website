@@ -22,8 +22,7 @@ export default function Contact() {
         if (entry.isIntersecting) {
           setIsVisible(true);
         }
-      },
-      { threshold: 0.1 }
+      }
     );
 
     if (sectionRef.current) {
@@ -46,24 +45,22 @@ export default function Contact() {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
+    // Ensure the form reference exists before sending
+    if (!form.current) {
+      console.error("Form reference is not available.");
+      setSubmitStatus('error');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      // EmailJS implementation
       const emailjs = (await import('@emailjs/browser')).default;
       
-      const templateParams = {
-        to_name: "Karen Chess Club",
-        from_name: formData.name,
-        from_email: formData.email,
-        phone: formData.phone,
-        experience: formData.experience,
-        program: formData.program,
-        message: formData.message,
-      };
-
-      await emailjs.send(
+      // Use emailjs.sendForm with the form reference
+      await emailjs.sendForm(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        templateParams,
+        form.current, // Pass the form reference here
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       );
 
@@ -81,7 +78,6 @@ export default function Contact() {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
-      // Auto-hide status after 5 seconds
       setTimeout(() => setSubmitStatus(null), 5000);
     }
   };

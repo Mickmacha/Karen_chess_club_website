@@ -93,7 +93,7 @@ export default function Layout({ children }) {
 
       {/* WhatsApp Button */}
       <WhatsAppButton 
-        phoneNumber="254700123456" 
+        phoneNumber="254712528497" 
         message="Hello, I would like to know more about Karen Chess Club programs." 
       />
 
