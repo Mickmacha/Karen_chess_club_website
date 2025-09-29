@@ -29,6 +29,70 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
+  // FEN position
+  const puzzleFen = '5nk1/pp1r1pp1/4p1np/3pP2Q/6RP/3B1R2/q4PPK/8 w - - 2 28';
+
+  // Function to convert FEN to a 64-character array of piece symbols
+  const fenToPieceArray = (fen) => {
+    const pieceMap = {
+      'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚', 'p': '♟',
+      'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔', 'P': '♙'
+    };
+    let board = [];
+    let fenParts = fen.split(' ')[0]; // Get only the piece placement part
+
+    for (const char of fenParts) {
+      if (char === '/') {
+        continue; // New rank
+      } else if (/\d/.test(char)) {
+        // Empty squares
+        board = board.concat(Array(parseInt(char)).fill(''));
+      } else {
+        // Piece
+        board.push(pieceMap[char]);
+      }
+    }
+    return board;
+  };
+
+  // Function to get the original FEN character for color check
+  const getFenChar = (fen, index) => {
+    let count = 0;
+    let fenParts = fen.split(' ')[0];
+    for (const char of fenParts) {
+        if (char === '/') continue;
+        if (/\d/.test(char)) {
+            count += parseInt(char);
+            // This case handles when the index falls within an empty span
+            if (index < count) {
+                // To find the exact FEN character corresponding to the current board index 'i'
+                // we have to check what piece would land on index 'i' if we count pieces/empty squares
+                let tempCount = 0;
+                let charIndex = 0;
+                for (const tempChar of fenParts) {
+                    if (tempChar === '/') continue;
+                    if (/\d/.test(tempChar)) {
+                        tempCount += parseInt(tempChar);
+                    } else {
+                        if (tempCount === index) return tempChar;
+                        tempCount++;
+                    }
+                    if (tempCount > index) return null; // Found no piece at this index
+                    charIndex++;
+                }
+                return null;
+            }
+        } else {
+            if (count === index) return char;
+            count++;
+        }
+    }
+    return null;
+  };
+
+
+  const puzzlePieces = fenToPieceArray(puzzleFen);
+
   return (
     <section id="hero" className="relative min-h-screen py-32 text-white overflow-hidden">
       {/* Animated Background Elements */}
@@ -142,21 +206,38 @@ export default function Hero() {
                   <div className="grid grid-cols-8 gap-1 transform hover:scale-[1.02] transition-transform duration-500">
                     {Array.from({ length: 64 }, (_, i) => {
                       const isEven = Math.floor(i / 8) % 2 === i % 2;
+                      const piece = puzzlePieces[i]; 
+                      const fenChar = getFenChar(puzzleFen, i);
+                      
+                      let pieceColorClass = '';
+                      if (piece) {
+                        // Check if the piece symbol is a lowercase letter (black piece)
+                        if (fenChar && fenChar === fenChar.toLowerCase() && fenChar !== fenChar.toUpperCase()) {
+                            // BLACK PIECES: Dark contrast color
+                            pieceColorClass = 'text-gray-900'; 
+                        } else {
+                            // WHITE PIECES: Distinct blue color
+                            pieceColorClass = 'text-stone-800'; 
+                        }
+                      }
+
+
                       return (
                         <div
                           key={i}
-                          className={`aspect-square rounded-sm transition-all duration-300 hover:scale-110 cursor-pointer ${
+                          className={`aspect-square rounded-sm transition-all duration-300 hover:scale-110 cursor-pointer flex items-center justify-center ${
                             isEven ? 'bg-amber-100 hover:bg-amber-200' : 'bg-amber-800 hover:bg-amber-700'
                           }`}
                           style={{
                             animationDelay: `${i * 10}ms`
                           }}
                         >
-                          {/* Add some pieces for visual interest */}
-                          {i === 0 && <div className="text-amber-800 text-center leading-none text-lg">♜</div>}
-                          {i === 7 && <div className="text-amber-800 text-center leading-none text-lg">♜</div>}
-                          {i === 56 && <div className="text-amber-100 text-center leading-none text-lg">♖</div>}
-                          {i === 63 && <div className="text-amber-100 text-center leading-none text-lg">♖</div>}
+                          {piece && (
+                            // Increased text size to `text-5xl`
+                            <div className={`${pieceColorClass} text-5xl text-center leading-none`}>
+                              {piece}
+                            </div>
+                          )}
                         </div>
                       );
                     })}
