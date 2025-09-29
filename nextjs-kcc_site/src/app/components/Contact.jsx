@@ -1,5 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebookF, faTwitter, faInstagram, faTiktok } from '@fortawesome/free-brands-svg-icons';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -45,7 +47,6 @@ export default function Contact() {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    // Ensure the form reference exists before sending
     if (!form.current) {
       console.error("Form reference is not available.");
       setSubmitStatus('error');
@@ -56,11 +57,10 @@ export default function Contact() {
     try {
       const emailjs = (await import('@emailjs/browser')).default;
       
-      // Use emailjs.sendForm with the form reference
       await emailjs.sendForm(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-        form.current, // Pass the form reference here
+        form.current,
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       );
 
@@ -144,6 +144,37 @@ export default function Contact() {
       link: null
     }
   ];
+
+  const socialLinks = [
+  {
+    name: 'Facebook',
+    icon: faFacebookF,
+    url: '#',
+    gradient: 'from-blue-600 to-blue-700',
+    hoverColor: 'hover:from-blue-700 hover:to-blue-800'
+  },
+  {
+    name: 'Twitter',
+    icon: faTwitter,
+    url: '#',
+    gradient: 'from-sky-500 to-sky-600',
+    hoverColor: 'hover:from-sky-600 hover:to-sky-700'
+  },
+  {
+    name: 'Instagram',
+    icon: faInstagram,
+    url: '#',
+    gradient: 'from-pink-500 to-purple-600',
+    hoverColor: 'hover:from-pink-600 hover:to-purple-700'
+  },
+  {
+    name: 'TikTok',
+    icon: faTiktok,
+    url: '#',
+    gradient: 'from-gray-900 to-black',
+    hoverColor: 'hover:from-black hover:to-gray-800'
+  }
+];
 
   return (
     <section 
@@ -407,29 +438,22 @@ export default function Contact() {
                 ))}
               </div>
 
-              {/* Social Media Links */}
+              {/* Social Media Links with FontAwesome */}
               <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
                 <h4 className="text-lg font-semibold text-white mb-4">Follow Us</h4>
                 <div className="flex space-x-4">
-                  {/* Add your social media links when available */}
-                  <a
-                    href="#"
-                    className="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl flex items-center justify-center text-white hover:scale-110 transition-transform duration-300"
-                  >
-                    <span className="text-xl">📘</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="w-12 h-12 bg-gradient-to-r from-sky-500 to-sky-600 rounded-xl flex items-center justify-center text-white hover:scale-110 transition-transform duration-300"
-                  >
-                    <span className="text-xl">🐦</span>
-                  </a>
-                  <a
-                    href="#"
-                    className="w-12 h-12 bg-gradient-to-r from-pink-500 to-pink-600 rounded-xl flex items-center justify-center text-white hover:scale-110 transition-transform duration-300"
-                  >
-                    <span className="text-xl">📸</span>
-                  </a>
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.name}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Follow us on ${social.name}`}
+                      className={`w-12 h-12 bg-gradient-to-r ${social.gradient} ${social.hoverColor} rounded-xl flex items-center justify-center text-white transition-all duration-300 transform hover:scale-110 hover:shadow-lg`}
+                    >
+                      <FontAwesomeIcon icon={social.icon} className="w-5 h-5" />
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>

@@ -188,7 +188,7 @@ export default function Programs() {
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">
-                  200+
+                  20+
                 </div>
                 <div className="text-sm text-gray-400">Graduates</div>
               </div>
