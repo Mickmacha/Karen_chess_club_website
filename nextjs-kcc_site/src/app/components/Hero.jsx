@@ -63,25 +63,7 @@ export default function Hero() {
         if (char === '/') continue;
         if (/\d/.test(char)) {
             count += parseInt(char);
-            // This case handles when the index falls within an empty span
-            if (index < count) {
-                // To find the exact FEN character corresponding to the current board index 'i'
-                // we have to check what piece would land on index 'i' if we count pieces/empty squares
-                let tempCount = 0;
-                let charIndex = 0;
-                for (const tempChar of fenParts) {
-                    if (tempChar === '/') continue;
-                    if (/\d/.test(tempChar)) {
-                        tempCount += parseInt(tempChar);
-                    } else {
-                        if (tempCount === index) return tempChar;
-                        tempCount++;
-                    }
-                    if (tempCount > index) return null; // Found no piece at this index
-                    charIndex++;
-                }
-                return null;
-            }
+            if (index < count) return null; 
         } else {
             if (count === index) return char;
             count++;
@@ -216,8 +198,8 @@ export default function Hero() {
                             // BLACK PIECES: Dark contrast color
                             pieceColorClass = 'text-gray-900'; 
                         } else {
-                            // WHITE PIECES: Distinct blue color
-                            pieceColorClass = 'text-stone-800'; 
+                            // WHITE PIECES: Using dark stone/wood color for high contrast and blend
+                            pieceColorClass = 'text-stone-900'; 
                         }
                       }
 
@@ -233,8 +215,7 @@ export default function Hero() {
                           }}
                         >
                           {piece && (
-                            // Increased text size to `text-5xl`
-                            <div className={`${pieceColorClass} text-5xl text-center leading-none`}>
+                            <div className={`${pieceColorClass} text-3xl sm:text-4xl md:text-5xl text-center leading-none`}>
                               {piece}
                             </div>
                           )}
