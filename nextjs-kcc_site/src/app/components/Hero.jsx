@@ -115,11 +115,11 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
         <div className="grid lg:grid-cols-2 gap-16 items-center w-full">
           <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}>
-            {/* Floating Badge */}
+            {/* Floating Badge
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-8 animate-bounce-subtle">
               <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
               <span className="text-sm font-medium">50+ Active Players Online</span>
-            </div>
+            </div> */}
 
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               Master the Game of{" "}

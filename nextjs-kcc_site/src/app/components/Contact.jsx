@@ -120,7 +120,7 @@ export default function Contact() {
         </svg>
       ),
       title: 'Phone',
-      details: ['+254 700 123 456', '+254 733 987 654'],
+      details: ['+254 712 528 497'],
       link: 'tel:+254700123456'
     },
     {
