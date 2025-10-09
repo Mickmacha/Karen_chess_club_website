@@ -130,7 +130,7 @@ export default function Contact() {
         </svg>
       ),
       title: 'Email',
-      details: ['info@karenchessclub.com', 'coaching@karenchessclub.com'],
+      details: ['karenchessclub@gmail.com'],
       link: 'mailto:info@karenchessclub.com'
     },
     {
