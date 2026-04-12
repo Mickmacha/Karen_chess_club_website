@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faTwitter, faInstagram, faTiktok } from '@fortawesome/free-brands-svg-icons';
 
@@ -12,6 +12,7 @@ export default function Contact() {
     program: '',
     message: ''
   });
+  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -40,12 +41,41 @@ export default function Contact() {
       ...prev,
       [name]: value
     }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const nextErrors = {};
+
+    if (!formData.name.trim()) {
+      nextErrors.name = 'Please enter your full name.';
+    }
+
+    if (!formData.email.trim()) {
+      nextErrors.email = 'Please enter your email address.';
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      nextErrors.email = 'Please enter a valid email address.';
+    }
+
+    if (!formData.message.trim()) {
+      nextErrors.message = 'Tell us a little about your chess goals.';
+    }
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
     setSubmitStatus(null);
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
 
     if (!form.current) {
       console.error("Form reference is not available.");
@@ -146,89 +176,65 @@ export default function Contact() {
   ];
 
   const socialLinks = [
-  {
-    name: 'Facebook',
-    icon: faFacebookF,
-    url: '#',
-    gradient: 'from-blue-600 to-blue-700',
-    hoverColor: 'hover:from-blue-700 hover:to-blue-800'
-  },
-  {
-    name: 'Twitter',
-    icon: faTwitter,
-    url: '#',
-    gradient: 'from-sky-500 to-sky-600',
-    hoverColor: 'hover:from-sky-600 hover:to-sky-700'
-  },
-  {
-    name: 'Instagram',
-    icon: faInstagram,
-    url: '#',
-    gradient: 'from-pink-500 to-purple-600',
-    hoverColor: 'hover:from-pink-600 hover:to-purple-700'
-  },
-  {
-    name: 'TikTok',
-    icon: faTiktok,
-    url: '#',
-    gradient: 'from-gray-900 to-black',
-    hoverColor: 'hover:from-black hover:to-gray-800'
-  }
-];
+    {
+      name: 'Facebook',
+      icon: faFacebookF,
+      url: '#'
+    },
+    {
+      name: 'Twitter',
+      icon: faTwitter,
+      url: '#'
+    },
+    {
+      name: 'Instagram',
+      icon: faInstagram,
+      url: '#'
+    },
+    {
+      name: 'TikTok',
+      icon: faTiktok,
+      url: '#'
+    }
+  ];
 
   return (
-    <section 
+    <section
       ref={sectionRef}
-      id="contact" 
-      className="py-35 text-white relative overflow-hidden"
+      id="contact"
+      className="relative py-24 text-white"
     >
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        {/* Animated Chess Pieces */}
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute text-4xl text-white/5 animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${8 + Math.random() * 4}s`
-            }}
-          >
-            {['♔', '♛', '♜', '♝', '♞', '♟'][Math.floor(Math.random() * 6)]}
-          </div>
-        ))}
-        
-        {/* Gradient Orbs */}
-        <div className="absolute top-20 left-20 w-64 h-64 bg-gradient-to-r from-orange-500/10 to-amber-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-10 right-10 h-72 w-72 rounded-full bg-orange-500/15 blur-[140px]"></div>
+        <div className="absolute bottom-10 left-10 h-72 w-72 rounded-full bg-blue-500/15 blur-[140px]"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className={`text-center mb-16 transform transition-all duration-1000 ${
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className={`mb-12 max-w-3xl ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-        }`}>
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-4">
-            <span className="text-orange-400 font-medium">Get In Touch</span>
+        } transform transition-all duration-700`}>
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-xs text-slate-300">
+            Get in touch
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Ready to Make Your Move?
+          <h2 className="mt-6 text-3xl sm:text-4xl font-semibold leading-[1.2] text-slate-100">
+            Let us help you sharpen your next move.
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Join our chess community today. Whether you're a beginner or looking to sharpen your skills, 
-            we're here to help you on your strategic journey.
+          <p className="mt-4 text-lg text-slate-300 leading-relaxed">
+            Tell us about your goals. We will recommend the right program and connect you with the next
+            available session in Karen.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           {/* Contact Form */}
-          <div className={`transform transition-all duration-1000 delay-300 ${
+          <div className={`transform transition-all duration-700 delay-200 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
-            <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20">
-              <h3 className="text-2xl font-bold mb-6 text-white">Send Us a Message</h3>
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-lg shadow-2xl shadow-black/20">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <h3 className="text-2xl font-semibold text-white">Send a message</h3>
+                <span className="text-xs text-slate-300">Response in 24 hours</span>
+              </div>
               
               <form ref={form} onSubmit={handleSubmit} className="space-y-6">
                 {/* Name & Email Row */}
@@ -244,9 +250,15 @@ export default function Contact() {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                      aria-invalid={Boolean(errors.name)}
+                      className={`w-full px-4 py-3 rounded-2xl bg-slate-950/40 border text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 ${
+                        errors.name ? 'border-red-400/70 focus:ring-red-400' : 'border-white/20'
+                      }`}
                       placeholder="Your full name"
                     />
+                    {errors.name && (
+                      <p className="mt-2 text-sm text-red-300">{errors.name}</p>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
@@ -259,9 +271,15 @@ export default function Contact() {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                      aria-invalid={Boolean(errors.email)}
+                      className={`w-full px-4 py-3 rounded-2xl bg-slate-950/40 border text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 ${
+                        errors.email ? 'border-red-400/70 focus:ring-red-400' : 'border-white/20'
+                      }`}
                       placeholder="your@email.com"
                     />
+                    {errors.email && (
+                      <p className="mt-2 text-sm text-red-300">{errors.email}</p>
+                    )}
                   </div>
                 </div>
 
@@ -276,7 +294,7 @@ export default function Contact() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 rounded-2xl bg-slate-950/40 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
                     placeholder="+254 700 123 456"
                   />
                 </div>
@@ -292,7 +310,7 @@ export default function Contact() {
                       name="experience"
                       value={formData.experience}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                      className="w-full px-4 py-3 rounded-2xl bg-slate-950/40 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
                     >
                       {experienceLevels.map(level => (
                         <option key={level.value} value={level.value} className="bg-slate-800">
@@ -310,7 +328,7 @@ export default function Contact() {
                       name="program"
                       value={formData.program}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                      className="w-full px-4 py-3 rounded-2xl bg-slate-950/40 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
                     >
                       {programs.map(program => (
                         <option key={program.value} value={program.value} className="bg-slate-800">
@@ -333,16 +351,22 @@ export default function Contact() {
                     rows={4}
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 resize-none"
+                    aria-invalid={Boolean(errors.message)}
+                    className={`w-full px-4 py-3 rounded-2xl bg-slate-950/40 border text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 resize-none ${
+                      errors.message ? 'border-red-400/70 focus:ring-red-400' : 'border-white/20'
+                    }`}
                     placeholder="Tell us about your chess goals, questions, or anything else..."
                   />
+                  {errors.message && (
+                    <p className="mt-2 text-sm text-red-300">{errors.message}</p>
+                  )}
                 </div>
 
                 {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white px-8 py-4 rounded-xl font-semibold hover:from-orange-600 hover:to-amber-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25 relative overflow-hidden group"
+                  className="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white px-8 py-4 rounded-2xl font-semibold hover:from-orange-400 hover:to-amber-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg shadow-orange-500/20"
                 >
                   <span className="relative z-10 flex items-center justify-center">
                     {isSubmitting ? (
@@ -359,12 +383,11 @@ export default function Contact() {
                       </>
                     )}
                   </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 </button>
 
                 {/* Status Messages */}
                 {submitStatus === 'success' && (
-                  <div className="p-4 bg-green-500/20 border border-green-500/30 rounded-xl text-green-300 animate-slideDown">
+                  <div className="p-4 bg-green-500/20 border border-green-500/30 rounded-2xl text-green-300 animate-slideDown">
                     <div className="flex items-center">
                       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -375,7 +398,7 @@ export default function Contact() {
                 )}
 
                 {submitStatus === 'error' && (
-                  <div className="p-4 bg-red-500/20 border border-red-500/30 rounded-xl text-red-300 animate-slideDown">
+                  <div className="p-4 bg-red-500/20 border border-red-500/30 rounded-2xl text-red-300 animate-slideDown">
                     <div className="flex items-center">
                       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -389,27 +412,27 @@ export default function Contact() {
           </div>
 
           {/* Contact Information */}
-          <div className={`transform transition-all duration-1000 delay-500 ${
+          <div className={`transform transition-all duration-700 delay-300 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
           }`}>
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-2xl font-bold mb-6 text-white">Get In Touch</h3>
-                <p className="text-gray-300 text-lg mb-8">
-                  Ready to join our chess community? Reach out to us through any of the channels below. 
-                  We're always happy to discuss your chess journey and help you find the right program.
+            <div className="space-y-6">
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+                <h3 className="text-2xl font-semibold text-white">Reach us directly</h3>
+                <p className="mt-3 text-base text-slate-300">
+                  Prefer a direct line? We respond quickly to messages and calls. Let us know the
+                  best way to contact you.
                 </p>
               </div>
 
               {/* Contact Info Cards */}
-              <div className="grid gap-6">
+              <div className="grid gap-4">
                 {contactInfo.map((info, index) => (
                   <div
                     key={index}
-                    className="group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-300 transform hover:scale-105"
+                    className="group rounded-2xl border border-white/10 bg-slate-900/40 p-5 transition-all duration-300 hover:border-white/20 hover:bg-slate-900/60"
                   >
                     <div className="flex items-start space-x-4">
-                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-orange-500 to-amber-500 rounded-xl flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300">
+                      <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center text-white">
                         {info.icon}
                       </div>
                       <div className="flex-grow">
@@ -439,9 +462,12 @@ export default function Contact() {
               </div>
 
               {/* Social Media Links with FontAwesome */}
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-                <h4 className="text-lg font-semibold text-white mb-4">Follow Us</h4>
-                <div className="flex space-x-4">
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+                <h4 className="text-lg font-semibold text-white">Follow the club</h4>
+                <p className="mt-2 text-sm text-slate-300">
+                  Highlights, tournament updates, and coaching tips.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-3">
                   {socialLinks.map((social) => (
                     <a
                       key={social.name}
@@ -449,7 +475,7 @@ export default function Contact() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`Follow us on ${social.name}`}
-                      className={`w-12 h-12 bg-gradient-to-r ${social.gradient} ${social.hoverColor} rounded-xl flex items-center justify-center text-white transition-all duration-300 transform hover:scale-110 hover:shadow-lg`}
+                      className="w-11 h-11 rounded-full border border-white/15 bg-white/5 flex items-center justify-center text-white transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5"
                     >
                       <FontAwesomeIcon icon={social.icon} className="w-5 h-5" />
                     </a>
@@ -471,10 +497,6 @@ export default function Contact() {
         @keyframes slideDown {
           from { transform: translateY(-10px); opacity: 0; }
           to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .animate-float {
-          animation: float 8s ease-in-out infinite;
         }
         
         .animate-slideDown {
