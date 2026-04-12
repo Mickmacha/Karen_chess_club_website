@@ -26,9 +26,12 @@ Karen_chess_club_website/
 │   ├── src/
 │   │   ├── app/              # Next.js App Router
 │   │   │   ├── components/   # React components (JSX)
+│   │   │   │   ├── layout/   # Layout shell (Header, Footer, Layout)
+│   │   │   │   ├── sections/ # Page sections (Hero, About, Gallery)
+│   │   │   │   └── ui/       # UI primitives (Button, Card)
 │   │   │   ├── [slug]/       # Dynamic blog post routes
-│   │   │   ├── gallery/      # Gallery page
 │   │   │   ├── blog/         # Blog listing page
+│   │   │   ├── gallery/      # Gallery page
 │   │   │   └── globals.css   # Global styles
 │   │   └── sanity/           # Sanity client configuration
 │   ├── package.json
