@@ -2,6 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/sanity/image";
 
+/**
+ * @param {Object} props
+ * @param {Array} props.images
+ * @returns {JSX.Element|null}
+ */
 export function GalleryPreview({ images = [] }) {
   if (images.length === 0) return null;
 

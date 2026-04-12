@@ -5,6 +5,25 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/image';
 
+interface Product {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  description: string;
+  price: number;
+  category: string;
+  image: {
+    _type: string;
+    asset: { _ref: string; _type: string };
+    alt?: string;
+    caption?: string;
+    hotspot?: Record<string, unknown>;
+  };
+  featured: boolean;
+  inStock: boolean;
+  publishedAt: string;
+}
+
 const PRODUCT_CATEGORIES = [
   { label: 'All', value: 'all' },
   { label: 'Boards & Sets', value: 'boards' },
@@ -14,7 +33,7 @@ const PRODUCT_CATEGORIES = [
   { label: 'Merchandise', value: 'merchandise' },
 ];
 
-export default function StoreContent({ products = [] }) {
+export default function StoreContent({ products = [] }: { products: Product[] }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const filteredProducts = useMemo(() => {
@@ -141,7 +160,7 @@ export default function StoreContent({ products = [] }) {
             <div>
               <h3 className="font-display text-lg font-semibold text-slate-100 mb-2">How to Purchase</h3>
               <p className="text-slate-300 text-sm leading-relaxed">
-                Click "Inquire Now" on any product to contact us directly. We'll help you with pricing, availability, and delivery details.
+                Click &quot;Inquire Now&quot; on any product to contact us directly. We&apos;ll help you with pricing, availability, and delivery details.
               </p>
             </div>
             <div>

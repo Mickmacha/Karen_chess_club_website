@@ -97,7 +97,8 @@ export default async function IndexPage() {
       <About />
       <Programs />
       <GalleryPreview images={featuredImages} />
-      <TournamentBooking tournaments={featuredTournaments as unknown as any} />
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+      <TournamentBooking tournaments={featuredTournaments as any} />
       <BlogPreview posts={posts} />
       <Contact />
     </Layout>

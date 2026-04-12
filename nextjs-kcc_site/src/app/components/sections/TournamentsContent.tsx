@@ -29,7 +29,13 @@ interface Tournament {
   registrationDeadline: string;
   prizeFund?: string;
   registrationOpen: boolean;
-  image: any;
+  image: {
+    _type: string;
+    asset: { _ref: string; _type: string };
+    alt?: string;
+    caption?: string;
+    hotspot?: Record<string, unknown>;
+  };
 }
 
 export default function TournamentsContent({ tournaments = [] }: { tournaments: Tournament[] }) {
@@ -238,7 +244,7 @@ export default function TournamentsContent({ tournaments = [] }: { tournaments: 
             <div>
               <h3 className="font-display text-lg font-semibold text-slate-100 mb-2">How to Register</h3>
               <p className="text-slate-300 text-sm leading-relaxed">
-                Click "Register Now" on any tournament to express your interest. Complete the form and confirm your participation via email or WhatsApp.
+                Click &quot;Register Now&quot; on any tournament to express your interest. Complete the form and confirm your participation via email or WhatsApp.
               </p>
             </div>
             <div>
@@ -250,7 +256,7 @@ export default function TournamentsContent({ tournaments = [] }: { tournaments: 
             <div>
               <h3 className="font-display text-lg font-semibold text-slate-100 mb-2">Questions?</h3>
               <p className="text-slate-300 text-sm leading-relaxed">
-                Contact our tournament coordinator via the form below or WhatsApp. We're here to help with participant inquiries and rule clarifications.
+                Contact our tournament coordinator via the form below or WhatsApp. We&apos;re here to help with participant inquiries and rule clarifications.
               </p>
             </div>
           </div>

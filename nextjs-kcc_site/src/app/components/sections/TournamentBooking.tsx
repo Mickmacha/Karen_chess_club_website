@@ -16,7 +16,13 @@ interface Tournament {
   currentParticipants: number;
   entryFee: number;
   registrationOpen: boolean;
-  image: any;
+  image: {
+    _type: string;
+    asset: { _ref: string; _type: string };
+    alt?: string;
+    caption?: string;
+    hotspot?: Record<string, unknown>;
+  };
 }
 
 const TOURNAMENT_SECTIONS: { [key: string]: string } = {
@@ -141,7 +147,7 @@ export default function TournamentBooking({ tournaments = [] }: { tournaments: T
         {/* CTA */}
         <div className="mt-12 text-center">
           <p className="text-slate-400 mb-4">
-            Don't see the tournament you're looking for?
+            Don&apos;t see the tournament you&apos;re looking for?
           </p>
           <Link
             href="/tournaments"
