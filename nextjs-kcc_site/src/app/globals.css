@@ -2,20 +2,23 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  
-  /* Chess Club Custom Colors */
-  --color-chess-gold: #f4a261;
-  --color-chess-orange: #ff8c42;
-  --color-chess-dark: #1a1a1a;
+  --background: #0b0f14;
+  --foreground: #f9fafb;
+  --surface: #111827;
+  --surface-soft: rgba(255, 255, 255, 0.06);
+  --border-soft: rgba(255, 255, 255, 0.12);
+
+  /* Chess Club Brand Colors */
+  --color-chess-gold: #f59e0b;
+  --color-chess-orange: #f97316;
+  --color-chess-dark: #0b0f14;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
   
   /* Custom chess colors for Tailwind */
   --color-chess-gold: var(--color-chess-gold);
@@ -33,7 +36,12 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), "Manrope", system-ui, -apple-system, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display), "Playfair Display", ui-serif, serif;
+  letter-spacing: -0.01em;
 }
 
 /* Chess Club Animations */
