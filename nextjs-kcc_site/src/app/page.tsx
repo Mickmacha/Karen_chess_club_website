@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { type SanityDocument } from "next-sanity";
 import { client } from "@/sanity/client";
-import { FEATURED_GALLERY_QUERY, POSTS_PREVIEW_QUERY } from "@/sanity/queries";
+import { FEATURED_GALLERY_QUERY, POSTS_PREVIEW_QUERY, FEATURED_TOURNAMENTS_QUERY } from "@/sanity/queries";
 
 import Layout from "./components/layout/Layout";
 import Hero from "./components/sections/Hero";
 import About from "./components/sections/About";
 import Programs from "./components/sections/Programs";
 import { GalleryPreview } from "./components/sections/GalleryPreview";
+import TournamentBooking from "./components/sections/TournamentBooking";
 import Contact from "./components/sections/Contact";
 
 const options = { next: { revalidate: 30 } };
@@ -84,6 +85,11 @@ export default async function IndexPage() {
     {},
     options
   );
+  const featuredTournaments = await client.fetch<SanityDocument[]>(
+    FEATURED_TOURNAMENTS_QUERY,
+    {},
+    options
+  );
 
   return (
     <Layout>
@@ -91,6 +97,7 @@ export default async function IndexPage() {
       <About />
       <Programs />
       <GalleryPreview images={featuredImages} />
+      <TournamentBooking tournaments={featuredTournaments} />
       <BlogPreview posts={posts} />
       <Contact />
     </Layout>
