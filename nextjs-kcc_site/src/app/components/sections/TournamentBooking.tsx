@@ -11,7 +11,7 @@ interface Tournament {
   date: string;
   time: string;
   location: string;
-  difficulty: string;
+  section: string;
   maxParticipants: number;
   currentParticipants: number;
   entryFee: number;
@@ -19,11 +19,18 @@ interface Tournament {
   image: any;
 }
 
-const DIFFICULTY_COLORS: { [key: string]: string } = {
-  beginner: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
-  intermediate: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-  advanced: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
-  open: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+const TOURNAMENT_SECTIONS: { [key: string]: string } = {
+  open: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+  ladies: 'bg-pink-500/20 text-pink-300 border-pink-500/30',
+  junior_boy: 'bg-green-500/20 text-green-300 border-green-500/30',
+  junior_girl: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+};
+
+const SECTION_LABELS: { [key: string]: string } = {
+  open: 'Open',
+  ladies: 'Ladies',
+  junior_boy: 'Junior (Boy)',
+  junior_girl: 'Junior (Girl)',
 };
 
 export default function TournamentBooking({ tournaments = [] }: { tournaments: Tournament[] }) {
@@ -69,7 +76,6 @@ export default function TournamentBooking({ tournaments = [] }: { tournaments: T
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {tournaments.slice(0, 4).map((tournament) => {
             const availability = getAvailabilityPercentage(tournament.currentParticipants, tournament.maxParticipants);
-            const colorClass = DIFFICULTY_COLORS[tournament.difficulty] || DIFFICULTY_COLORS.beginner;
 
             return (
               <Link
@@ -90,13 +96,13 @@ export default function TournamentBooking({ tournaments = [] }: { tournaments: T
 
                   {/* Content */}
                   <div className="flex-1 flex flex-col p-4 sm:p-5">
-                    {/* Date and Difficulty */}
+                    {/* Date and Section */}
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <span className="text-xs font-medium text-orange-300">
                         {formatDate(tournament.date)}
                       </span>
-                      <span className={`text-xs font-medium px-2 py-1 rounded border ${colorClass}`}>
-                        {tournament.difficulty.charAt(0).toUpperCase() + tournament.difficulty.slice(1)}
+                      <span className={`text-xs font-medium px-2 py-1 rounded border ${TOURNAMENT_SECTIONS[tournament.section] || TOURNAMENT_SECTIONS.open}`}>
+                        {SECTION_LABELS[tournament.section] || tournament.section}
                       </span>
                     </div>
 

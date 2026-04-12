@@ -123,7 +123,7 @@ export const FEATURED_TOURNAMENTS_QUERY = `*[
   date,
   time,
   location,
-  difficulty,
+  section,
   format,
   maxParticipants,
   currentParticipants,
@@ -145,7 +145,7 @@ export const ALL_TOURNAMENTS_QUERY = `*[
   date,
   time,
   location,
-  difficulty,
+  section,
   format,
   maxParticipants,
   currentParticipants,
@@ -157,9 +157,9 @@ export const ALL_TOURNAMENTS_QUERY = `*[
   image
 }`;
 
-export const TOURNAMENTS_BY_DIFFICULTY_QUERY = `*[
+export const TOURNAMENTS_BY_SECTION_QUERY = `*[
   _type == "tournament"
-  && difficulty == $difficulty
+  && section == $section
   && defined(image)
 ]|order(date asc){
   _id,
@@ -169,7 +169,7 @@ export const TOURNAMENTS_BY_DIFFICULTY_QUERY = `*[
   date,
   time,
   location,
-  difficulty,
+  section,
   format,
   maxParticipants,
   currentParticipants,

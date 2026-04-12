@@ -12,27 +12,27 @@ The Tournament Booking feature allows players to browse, filter, and register fo
 
 ### Tech Stack
 - **CMS**: Sanity Studio with custom Tournament schema
-- **Frontend**: Next.js server component (ISR caching) + client component (difficulty filtering)
+- **Frontend**: Next.js server component (ISR caching) + client component (section filtering)
 - **Styling**: Tailwind CSS (matches site design system)
 - **Registration**: Direct contact links (email, WhatsApp, contact form)
 - **Display**: Homepage tournament booking section + dedicated `/tournaments` page
 
 ### How It Works
 
-1. **Tournament Management**: Manage tournaments in Sanity Studio (date, time, location, difficulty, participants)
+1. **Tournament Management**: Manage tournaments in Sanity Studio (date, time, location, section, participants)
 2. **ISR Caching**: Tournament data cached for 1 hour, refreshed automatically
 3. **Homepage Preview**: Featured tournaments displayed on homepage (up to 4 featured items)
-4. **Full Page**: `/tournaments` page shows all tournaments with difficulty-level filtering
+4. **Full Page**: `/tournaments` page shows all tournaments with section filtering
 5. **Registration**: "Register Now" button links to contact form with tournament pre-populated as query parameter
 
 ## Features
 
-- ✅ **5 Difficulty Levels**: Beginner, Intermediate, Advanced, Open, All Levels filter
+- ✅ **4 Tournament Sections**: Open, Ladies, Junior (Boy), Junior (Girl)
 - ✅ **Participant Tracking**: Display current vs. max participants with color-coded availability bar
 - ✅ **Registration Management**: Track open/closed registrations, registration deadlines
 - ✅ **Rich Information**: Date, time, location, format, entry fee, prize fund displayed
 - ✅ **Featured Tournaments**: Mark tournaments as featured for homepage display
-- ✅ **Difficulty Filtering**: Client-side filter for fast browsing
+- ✅ **Section Filtering**: Client-side filter for fast browsing
 - ✅ **ISR Caching**: Tournaments update automatically every hour
 - ✅ **Static Deployment**: No backend servers needed, hosted on Vercel
 
@@ -70,7 +70,7 @@ studio-kcc_site/
 | Date | Date | ✅ | Tournament date |
 | Time | String | ✅ | Start time (HH:MM format) |
 | Location | String | ✅ | Venue/location |
-| Difficulty | Select | ✅ | beginner, intermediate, advanced, open |
+| Section | Select | ✅ | open, ladies, junior_boy, junior_girl |
 | Format | String | ✅ | e.g., Round Robin, Swiss System, Knockout |
 | Max Participants | Number | ✅ | Maximum player count |
 | Current Participants | Number | ✅ | Current registrations (default: 0) |
@@ -90,8 +90,8 @@ FEATURED_TOURNAMENTS_QUERY: Returns up to 6 featured tournaments ordered by date
 // Fetch all tournaments (for /tournaments page)
 ALL_TOURNAMENTS_QUERY: Returns all tournaments with full details ordered by date
 
-// Fetch by difficulty (optional, available for future use)
-TOURNAMENTS_BY_DIFFICULTY_QUERY: Filter tournaments by difficulty level using $difficulty parameter
+// Fetch by section (optional, available for future use)
+TOURNAMENTS_BY_SECTION_QUERY: Filter tournaments by section using $section parameter
 ```
 
 ## Managing Tournaments in Sanity
@@ -100,13 +100,13 @@ TOURNAMENTS_BY_DIFFICULTY_QUERY: Filter tournaments by difficulty level using $d
 1. Go to Sanity Studio
 2. Click "Create" → "Tournament"
 3. Fill all required fields:
-   - Title (e.g., "Karen Chess Open 2024")
+  - Title (e.g., "Karen Chess Open 2024")
    - Date and time
    - Location
    - Format (Round Robin, Swiss, etc.)
    - Max participants (e.g., 32)
    - Entry fee (e.g., 1500 for KES 1,500)
-   - Difficulty level
+   - Tournament section (Open, Ladies, Junior Boy, Junior Girl)
    - Registration deadline
 4. Mark as "Featured" if you want it on homepage
 5. Click "Publish"
@@ -147,7 +147,7 @@ npm run dev
 - Check Header for "Tournaments" link
 
 ### Test Features
-1. **Filtering**: Click difficulty filters on /tournaments page
+1. **Filtering**: Click section filters on /tournaments page
 2. **Availability**: Go to Sanity, change participant count, refresh browser after ISR (~60s)
 3. **Registration**: Click "Register Now", verify it links to contact form with tournament pre-filled
 4. **Featured**: Go to Sanity, mark a tournament as featured, refresh homepage
@@ -231,8 +231,8 @@ Consider adding Schema.org markup for events (future enhancement)
 3. Wait for ISR refresh (~60 seconds on Vercel)
 4. Hard refresh browser (Ctrl+F5)
 
-### Difficulty filter not working?
-1. Ensure tournaments have difficulty level set
+### Section filter not working?
+1. Ensure tournaments have section set (Open, Ladies, Junior Boy, Junior Girl)
 2. Check browser console for errors
 3. Try refreshing the page
 

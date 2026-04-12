@@ -5,12 +5,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/image';
 
-const DIFFICULTY_LEVELS = [
-  { label: 'All Levels', value: 'all' },
-  { label: 'Beginner', value: 'beginner' },
-  { label: 'Intermediate', value: 'intermediate' },
-  { label: 'Advanced', value: 'advanced' },
+const TOURNAMENT_SECTIONS = [
+  { label: 'All Sections', value: 'all' },
   { label: 'Open', value: 'open' },
+  { label: 'Ladies', value: 'ladies' },
+  { label: 'Junior (Boy)', value: 'junior_boy' },
+  { label: 'Junior (Girl)', value: 'junior_girl' },
 ];
 
 interface Tournament {
@@ -21,7 +21,7 @@ interface Tournament {
   date: string;
   time: string;
   location: string;
-  difficulty: string;
+  section: string;
   format: string;
   maxParticipants: number;
   currentParticipants: number;
@@ -33,12 +33,12 @@ interface Tournament {
 }
 
 export default function TournamentsContent({ tournaments = [] }: { tournaments: Tournament[] }) {
-  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+  const [selectedSection, setSelectedSection] = useState('all');
 
   const filteredTournaments = useMemo(() => {
-    if (selectedDifficulty === 'all') return tournaments;
-    return tournaments.filter((tournament) => tournament.difficulty === selectedDifficulty);
-  }, [tournaments, selectedDifficulty]);
+    if (selectedSection === 'all') return tournaments;
+    return tournaments.filter((tournament) => tournament.section === selectedSection);
+  }, [tournaments, selectedSection]);
 
   const getAvailabilityPercentage = (current: number, max: number) => {
     return Math.round((current / max) * 100);
@@ -74,19 +74,19 @@ export default function TournamentsContent({ tournaments = [] }: { tournaments: 
       {/* Filters */}
       <section className="border-b border-white/10 bg-slate-950 py-8 sticky top-0 z-10">
         <div className="mx-auto max-w-6xl px-6 md:px-8">
-          <p className="text-sm font-medium text-slate-400 mb-4">Filter by Level</p>
+          <p className="text-sm font-medium text-slate-400 mb-4">Filter by Section</p>
           <div className="flex flex-wrap gap-3">
-            {DIFFICULTY_LEVELS.map((level) => (
+            {TOURNAMENT_SECTIONS.map((section) => (
               <button
-                key={level.value}
-                onClick={() => setSelectedDifficulty(level.value)}
+                key={section.value}
+                onClick={() => setSelectedSection(section.value)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-                  selectedDifficulty === level.value
+                  selectedSection === section.value
                     ? 'bg-orange-500 text-white'
                     : 'bg-white/5 text-slate-300 border border-white/10 hover:border-white/20 hover:bg-white/10'
                 }`}
               >
-                {level.label}
+                {section.label}
               </button>
             ))}
           </div>
@@ -132,7 +132,7 @@ export default function TournamentsContent({ tournaments = [] }: { tournaments: 
                           {formatDate(tournament.date)} at {tournament.time}
                         </span>
                         <span className="text-xs text-slate-400">
-                          {DIFFICULTY_LEVELS.find((l) => l.value === tournament.difficulty)?.label}
+                          {TOURNAMENT_SECTIONS.find((s) => s.value === tournament.section)?.label || tournament.section}
                         </span>
                       </div>
 
