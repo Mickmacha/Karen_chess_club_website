@@ -97,7 +97,7 @@ export default async function IndexPage() {
       <About />
       <Programs />
       <GalleryPreview images={featuredImages} />
-      <TournamentBooking tournaments={featuredTournaments} />
+      <TournamentBooking tournaments={featuredTournaments as unknown as any} />
       <BlogPreview posts={posts} />
       <Contact />
     </Layout>
