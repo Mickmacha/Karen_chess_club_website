@@ -110,3 +110,71 @@ export const PRODUCTS_BY_CATEGORY_QUERY = `*[
   inStock,
   publishedAt
 }`;
+
+export const FEATURED_TOURNAMENTS_QUERY = `*[
+  _type == "tournament"
+  && featured == true
+  && defined(image)
+]|order(date asc)[0...6]{
+  _id,
+  title,
+  slug,
+  description,
+  date,
+  time,
+  location,
+  difficulty,
+  format,
+  maxParticipants,
+  currentParticipants,
+  entryFee,
+  registrationDeadline,
+  prizeFund,
+  registrationOpen,
+  image
+}`;
+
+export const ALL_TOURNAMENTS_QUERY = `*[
+  _type == "tournament"
+  && defined(image)
+]|order(date asc){
+  _id,
+  title,
+  slug,
+  description,
+  date,
+  time,
+  location,
+  difficulty,
+  format,
+  maxParticipants,
+  currentParticipants,
+  entryFee,
+  registrationDeadline,
+  prizeFund,
+  featured,
+  registrationOpen,
+  image
+}`;
+
+export const TOURNAMENTS_BY_DIFFICULTY_QUERY = `*[
+  _type == "tournament"
+  && difficulty == $difficulty
+  && defined(image)
+]|order(date asc){
+  _id,
+  title,
+  slug,
+  description,
+  date,
+  time,
+  location,
+  difficulty,
+  format,
+  maxParticipants,
+  currentParticipants,
+  entryFee,
+  registrationDeadline,
+  registrationOpen,
+  image
+}`;
