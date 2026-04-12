@@ -1,114 +1,89 @@
-"use client"
-import Link from "next/link"
-import Image from 'next/image'
+"use client";
+import Link from "next/link";
+import Image from "next/image";
+
+const quickLinks = [
+  { label: "About", href: "#about" },
+  { label: "Programs", href: "#programs" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "Contact", href: "#contact" }
+];
+
+const resources = [
+  { label: "Blog", href: "/blog" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Privacy", href: "#" },
+  { label: "Terms", href: "#" }
+];
 
 export default function Footer() {
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-
   return (
-    <footer className="bg-black text-white py-8 border-t border-gray-800/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Footer Content */}
-        <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
-          {/* Logo Section - Matching Header Style */}
-          <button 
-            onClick={() => scrollToSection('hero')} 
-            className="flex items-center space-x-3 group transform hover:scale-105 transition-all duration-300"
-          >
-            {/* Logo Container matching header */}
-            <div className="relative w-10 h-10 rounded-lg shadow-md group-hover:shadow-lg group-hover:shadow-orange-500/25 transition-all duration-300 overflow-hidden bg-gradient-to-br from-orange-500 to-orange-600">
-              <Image
-                src="/logo-64.png"
-                alt="Karen Chess Club Logo"
-                width={64}
-                height={64}
-                className="object-contain transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-300"
-              />
+    <footer className="border-t border-white/10 bg-slate-950/80">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5">
+                <Image src="/Logo.svg" alt="Karen Chess Club" width={36} height={36} />
+              </span>
+              <div>
+                <p className="text-lg font-semibold text-white">Karen Chess Club</p>
+                <p className="text-xs text-slate-400">Strategic excellence</p>
+              </div>
             </div>
-            
-            {/* Text matching header */}
-            <div>
-              <h3 className="text-lg font-bold text-white group-hover:text-orange-400 transition-colors duration-300">
-                Karen Chess Club
-              </h3>
-              <p className="text-gray-400 text-xs">
-                Strategic Excellence
-              </p>
-            </div>
-          </button>
-
-          {/* Quick Navigation - Matching Header Style */}
-          <nav className="flex items-center space-x-6">
-            <button
-              onClick={() => scrollToSection('about')}
-              className="relative text-gray-300 hover:text-orange-400 transition-all duration-300 font-medium group"
-            >
-              <span className="relative z-10">About</span>
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-orange-500 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-            </button>
-            
-            <button
-              onClick={() => scrollToSection('programs')}
-              className="relative text-gray-300 hover:text-orange-400 transition-all duration-300 font-medium group"
-            >
-              <span className="relative z-10">Programs</span>
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-orange-500 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-            </button>
-            
-            <Link 
-              href="/blog" 
-              className="relative text-gray-300 hover:text-orange-400 transition-all duration-300 font-medium group"
-            >
-              <span className="relative z-10">Blog</span>
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-orange-500 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-            </Link>
-            
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="relative text-gray-300 hover:text-orange-400 transition-all duration-300 font-medium group"
-            >
-              <span className="relative z-10">Contact</span>
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-orange-500 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-            </button>
-          </nav>
-
-          {/* CTA Button - Matching Header Style */}
-          <button 
-            onClick={() => scrollToSection('contact')} 
-            className="relative bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-lg font-medium hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-orange-500/25 group overflow-hidden"
-          >
-            <span className="relative z-10">Join Club</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-          </button>
-        </div>
-        
-        {/* Bottom Copyright */}
-        <div className="border-t border-gray-800/50 mt-6 pt-6 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
-          <p className="text-gray-400 text-sm">
-            © 2025 Karen Chess Club. All rights reserved.
-          </p>
-          
-          <div className="flex space-x-4 mt-2 sm:mt-0">
-            <Link 
-              href="#" 
-              className="text-gray-400 hover:text-orange-400 transition-colors duration-300 text-sm"
-            >
-              Privacy
-            </Link>
-            <Link 
-              href="#" 
-              className="text-gray-400 hover:text-orange-400 transition-colors duration-300 text-sm"
-            >
-              Terms
-            </Link>
+            <p className="text-sm text-slate-300">
+              A focused chess community in Karen, Nairobi. We coach, train, and
+              compete together.
+            </p>
           </div>
+
+          <div>
+            <p className="text-sm font-semibold text-white">Quick links</p>
+            <ul className="mt-4 space-y-2 text-sm text-slate-300">
+              {quickLinks.map((item) => (
+                <li key={item.label}>
+                  <a href={item.href} className="hover:text-orange-300 transition">
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-sm font-semibold text-white">Resources</p>
+            <ul className="mt-4 space-y-2 text-sm text-slate-300">
+              {resources.map((item) => (
+                <li key={item.label}>
+                  <Link href={item.href} className="hover:text-orange-300 transition">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-sm font-semibold text-white">Contact</p>
+            <ul className="mt-4 space-y-2 text-sm text-slate-300">
+              <li>Karen, Nairobi</li>
+              <li>+254 712 528 497</li>
+              <li>karenchessclub@gmail.com</li>
+            </ul>
+            <a
+              href="#contact"
+              className="mt-5 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 hover:from-orange-400 hover:to-amber-400 transition"
+            >
+              Start a conversation
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+          <span>© 2026 Karen Chess Club. All rights reserved.</span>
+          <span>Designed for strategic excellence.</span>
         </div>
       </div>
     </footer>
-  )
+  );
 }

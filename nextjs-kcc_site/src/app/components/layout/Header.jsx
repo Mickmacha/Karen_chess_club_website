@@ -1,206 +1,213 @@
-"use client"
-import { useState, useEffect } from 'react'
+"use client";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+
+const navItems = [
+  { id: "hero", label: "Home" },
+  { id: "about", label: "About" },
+  { id: "programs", label: "Programs" },
+  { id: "gallery", label: "Gallery" },
+  { id: "contact", label: "Contact" },
+  { id: "store", label: "Store", path: "/store" }
+];
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [activeSection, setActiveSection] = useState('hero')
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-      
-      const sections = ['hero', 'about', 'programs', 'contact']
-      const currentSection = sections.find(section => {
-        const element = document.getElementById(section)
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          return rect.top <= 100 && rect.bottom >= 100
-        }
-        return false
-      })
-      if (currentSection) setActiveSection(currentSection)
-    }
+      setScrolled(window.scrollY > 40);
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+      const sections = navItems.map((item) => item.id);
+      const currentSection = sections.find((section) => {
+        const element = document.getElementById(section);
+        if (!element) return false;
+        const rect = element.getBoundingClientRect();
+        return rect.top <= 120 && rect.bottom >= 120;
+      });
+
+      if (currentSection) setActiveSection(currentSection);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId)
+    const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+      element.scrollIntoView({ behavior: "smooth" });
+    } else if (sectionId === "hero") {
+      // If on a different page and hero section doesn't exist, navigate home
+      window.location.href = "/";
     }
-    setIsMenuOpen(false)
-  }
-
-  const navItems = [
-    { id: 'hero', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'programs', label: 'Programs' },
-    { id: 'contact', label: 'Contact' }
-  ]
+    setIsMenuOpen(false);
+  };
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-      scrolled 
-        ? 'bg-white/95 backdrop-blur-md shadow-lg' 
-        : 'bg-gradient-to-b from-slate-900/80 to-transparent backdrop-blur-sm'
-    }`}>
+    <header
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-slate-950/85 backdrop-blur-xl border-b border-white/10"
+          : "bg-transparent"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          
-          {/* Logo Section - Redesigned for Clarity */}
-          <button 
-            onClick={() => scrollToSection('hero')} 
-            className="flex items-center gap-3 sm:gap-4 group"
+        <div className="flex items-center justify-between h-20">
+          <button
+            onClick={() => scrollToSection("hero")}
+            className="flex items-center gap-3 text-left group"
+            aria-label="Go to homepage"
           >
-            {/* Logo Icon - High Quality */}
-            <div className={`relative flex-shrink-0 transition-all duration-300 ${
-              scrolled 
-                ? 'w-12 h-12 sm:w-14 sm:h-14' 
-                : 'w-14 h-14 sm:w-16 sm:h-16'
-            } group-hover:scale-110`}>
-              <img
+            <span className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center overflow-hidden">
+              <Image
                 src="/Logo.svg"
                 alt="Karen Chess Club"
-                className="w-full h-full object-contain drop-shadow-lg"
-                style={{ imageRendering: 'crisp-edges' }}
+                width={40}
+                height={40}
+                className="object-contain"
+                priority
               />
-            </div>
-            
-            {/* Brand Text */}
-            <div className="flex flex-col justify-center">
-              <span className={`text-xl sm:text-2xl font-bold tracking-tight transition-all duration-300 ${
-                scrolled 
-                  ? 'text-slate-900' 
-                  : 'text-white'
-              } group-hover:text-orange-500`}>
+            </span>
+            <span className="flex flex-col">
+              <span className="text-lg sm:text-xl font-semibold text-white group-hover:text-orange-400 transition-colors">
                 Karen Chess Club
               </span>
-              <span className={`text-xs sm:text-sm font-medium transition-colors duration-300 ${
-                scrolled ? 'text-slate-600' : 'text-slate-300'
-              }`}>
-                Strategic Excellence
+              <span className="text-xs text-slate-400">
+                Strategic excellence
               </span>
-            </div>
+            </span>
           </button>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`relative font-medium transition-all duration-300 px-4 py-2 rounded-lg group ${
-                  activeSection === item.id
-                    ? scrolled 
-                      ? 'text-orange-500' 
-                      : 'text-orange-400'
-                    : scrolled
-                      ? 'text-gray-700 hover:text-orange-500'
-                      : 'text-gray-300 hover:text-orange-400'
-                }`}
-              >
-                <span className="relative z-10">{item.label}</span>
-                {activeSection === item.id && (
-                  <div className="absolute inset-0 bg-orange-500/10 rounded-lg animate-pulse"></div>
-                )}
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-orange-500 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-              </button>
-            ))}
-            
-            <a 
-              href="/blog" 
-              className={`font-medium transition-all duration-300 px-4 py-2 rounded-lg group relative ${
-                scrolled 
-                  ? 'text-gray-700 hover:text-orange-500' 
-                  : 'text-gray-300 hover:text-orange-400'
-              }`}
+          <nav className="hidden md:flex items-center gap-2">
+            {navItems.map((item) =>
+              item.path ? (
+                <Link
+                  key={item.id}
+                  href={item.path}
+                  className="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    activeSection === item.id
+                      ? "text-orange-300 bg-white/10"
+                      : "text-slate-300 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              )
+            )}
+            <Link
+              href="/blog"
+              className="px-4 py-2 rounded-full text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all"
             >
-              <span className="relative z-10">Blog</span>
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-orange-500 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-            </a>
+              Blog
+            </Link>
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
-            <button 
-              onClick={() => scrollToSection('contact')} 
-              className="relative bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-xl font-medium hover:from-orange-600 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-orange-500/25 group overflow-hidden"
+          <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={() => {
+                const contactElement = document.getElementById("contact");
+                if (contactElement) {
+                  contactElement.scrollIntoView({ behavior: "smooth" });
+                } else {
+                  // If on a different page, navigate home to contact section
+                  window.location.href = "/#contact";
+                }
+              }}
+              className="px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-orange-500 to-amber-500 shadow-lg shadow-orange-500/20 hover:from-orange-400 hover:to-amber-400 transition-all"
             >
-              <span className="relative z-10">Join Club</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+              Join the Club
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden flex flex-col justify-center gap-1.5 w-10 h-10 rounded-full border border-white/10 bg-white/5"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            aria-label="Toggle navigation"
+            aria-expanded={isMenuOpen}
           >
-            <div className="w-6 h-5 flex flex-col justify-between">
-              <span className={`block h-0.5 w-full transition-all duration-300 ${
-                scrolled ? 'bg-slate-900' : 'bg-white'
-              } ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-              <span className={`block h-0.5 w-full transition-all duration-300 ${
-                scrolled ? 'bg-slate-900' : 'bg-white'
-              } ${isMenuOpen ? 'opacity-0' : ''}`}></span>
-              <span className={`block h-0.5 w-full transition-all duration-300 ${
-                scrolled ? 'bg-slate-900' : 'bg-white'
-              } ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
-            </div>
+            <span
+              className={`h-0.5 w-5 bg-white mx-auto transition-transform ${
+                isMenuOpen ? "translate-y-1.5 rotate-45" : ""
+              }`}
+            ></span>
+            <span
+              className={`h-0.5 w-5 bg-white mx-auto transition-opacity ${
+                isMenuOpen ? "opacity-0" : "opacity-100"
+              }`}
+            ></span>
+            <span
+              className={`h-0.5 w-5 bg-white mx-auto transition-transform ${
+                isMenuOpen ? "-translate-y-1.5 -rotate-45" : ""
+              }`}
+            ></span>
           </button>
         </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        <div className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
-          isMenuOpen ? 'max-h-screen opacity-100 pb-6' : 'max-h-0 opacity-0'
-        }`}>
-          <div className={`pt-4 space-y-2 border-t ${
-            scrolled ? 'border-gray-200/20' : 'border-white/20'
-          }`}>
-            {navItems.map((item, index) => (
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ${
+          isMenuOpen ? "max-h-[420px]" : "max-h-0"
+        }`}
+      >
+        <div className="px-4 pb-6 pt-2 space-y-2 bg-slate-950/95 backdrop-blur-xl border-b border-white/10">
+          {navItems.map((item) =>
+            item.path ? (
+              <Link
+                key={item.id}
+                href={item.path}
+                className="block text-left px-4 py-3 rounded-2xl text-base font-medium text-slate-200 hover:text-white hover:bg-white/5 transition-all"
+              >
+                {item.label}
+              </Link>
+            ) : (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 ${
+                className={`w-full text-left px-4 py-3 rounded-2xl text-base font-medium transition-all ${
                   activeSection === item.id
-                    ? scrolled 
-                      ? 'text-orange-500 bg-orange-500/10' 
-                      : 'text-orange-400 bg-orange-400/10'
-                    : scrolled
-                      ? 'text-gray-700 hover:text-orange-500 hover:bg-gray-100/50'
-                      : 'text-gray-300 hover:text-orange-400 hover:bg-white/10'
+                    ? "text-orange-300 bg-white/10"
+                    : "text-slate-200 hover:text-white hover:bg-white/5"
                 }`}
-                style={{
-                  animationDelay: `${index * 100}ms`
-                }}
               >
                 {item.label}
               </button>
-            ))}
-            
-            <a 
-              href="/blog" 
-              className={`block px-4 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 ${
-                scrolled 
-                  ? 'text-gray-700 hover:text-orange-500 hover:bg-gray-100/50' 
-                  : 'text-gray-300 hover:text-orange-400 hover:bg-white/10'
-              }`}
-            >
-              Blog
-            </a>
-            
-            <button 
-              onClick={() => scrollToSection('contact')} 
-              className="w-full mt-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-xl font-medium text-center transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25"
-            >
-              Join Club
-            </button>
-          </div>
+            )
+          )}
+          <Link
+            href="/blog"
+            className="block px-4 py-3 rounded-2xl text-base font-medium text-slate-200 hover:text-white hover:bg-white/5 transition-all"
+          >
+            Blog
+          </Link>
+          <button
+            onClick={() => {
+              const contactElement = document.getElementById("contact");
+              if (contactElement) {
+                contactElement.scrollIntoView({ behavior: "smooth" });
+              } else {
+                // If on a different page, navigate home to contact section
+                window.location.href = "/#contact";
+              }
+              setIsMenuOpen(false);
+            }}
+            className="w-full px-4 py-3 rounded-2xl text-base font-semibold text-white bg-gradient-to-r from-orange-500 to-amber-500 shadow-lg shadow-orange-500/20"
+          >
+            Join the Club
+          </button>
         </div>
       </div>
     </header>
-  )
+  );
 }
