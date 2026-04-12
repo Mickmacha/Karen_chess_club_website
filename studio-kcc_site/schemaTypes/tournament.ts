@@ -1,0 +1,123 @@
+import {defineField, defineType} from 'sanity'
+
+export const tournamentType = defineType({
+  name: 'tournament',
+  title: 'Tournament',
+  type: 'document',
+  fields: [
+    defineField({
+      name: 'title',
+      title: 'Tournament Name',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'slug',
+      type: 'slug',
+      options: {source: 'title'},
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Tournament Description',
+      type: 'text',
+      rows: 4,
+    }),
+    defineField({
+      name: 'image',
+      title: 'Tournament Image',
+      type: 'image',
+      options: {hotspot: true},
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'date',
+      title: 'Tournament Date',
+      type: 'date',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'time',
+      title: 'Start Time',
+      type: 'string',
+      description: 'Format: HH:MM (e.g., 14:30)',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'location',
+      title: 'Location',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'difficulty',
+      title: 'Difficulty Level',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Beginner', value: 'beginner'},
+          {title: 'Intermediate', value: 'intermediate'},
+          {title: 'Advanced', value: 'advanced'},
+          {title: 'Open', value: 'open'},
+        ],
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'format',
+      title: 'Tournament Format',
+      type: 'string',
+      description: 'e.g., Round Robin, Swiss System, Knockout',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'maxParticipants',
+      title: 'Maximum Participants',
+      type: 'number',
+      validation: (rule) => rule.required().positive(),
+    }),
+    defineField({
+      name: 'currentParticipants',
+      title: 'Current Registrations',
+      type: 'number',
+      initialValue: 0,
+      validation: (rule) => rule.required().min(0),
+    }),
+    defineField({
+      name: 'entryFee',
+      title: 'Entry Fee (KES)',
+      type: 'number',
+      validation: (rule) => rule.required().min(0),
+    }),
+    defineField({
+      name: 'registrationDeadline',
+      title: 'Registration Deadline',
+      type: 'date',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'prizeFund',
+      title: 'Prize Fund Information',
+      type: 'text',
+      description: '1st place: X KES, 2nd place: Y KES, etc.',
+      rows: 2,
+    }),
+    defineField({
+      name: 'featured',
+      title: 'Featured Tournament',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'registrationOpen',
+      title: 'Registration Open',
+      type: 'boolean',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'publishedAt',
+      type: 'datetime',
+      initialValue: () => new Date().toISOString(),
+    }),
+  ],
+})
