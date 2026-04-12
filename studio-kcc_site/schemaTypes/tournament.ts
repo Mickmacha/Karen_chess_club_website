@@ -50,15 +50,15 @@ export const tournamentType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'difficulty',
-      title: 'Difficulty Level',
+      name: 'section',
+      title: 'Tournament Section',
       type: 'string',
       options: {
         list: [
-          {title: 'Beginner', value: 'beginner'},
-          {title: 'Intermediate', value: 'intermediate'},
-          {title: 'Advanced', value: 'advanced'},
           {title: 'Open', value: 'open'},
+          {title: 'Ladies', value: 'ladies'},
+          {title: 'Junior (Boy)', value: 'junior_boy'},
+          {title: 'Junior (Girl)', value: 'junior_girl'},
         ],
       },
       validation: (rule) => rule.required(),
