@@ -62,3 +62,51 @@ export const GALLERY_QUERY = `*[
   tags,
   publishedAt
 }`;
+
+export const FEATURED_PRODUCTS_QUERY = `*[
+  _type == "product"
+  && featured == true
+  && defined(image)
+]|order(publishedAt desc)[0...8]{
+  _id,
+  title,
+  slug,
+  description,
+  price,
+  category,
+  image,
+  inStock,
+  publishedAt
+}`;
+
+export const ALL_PRODUCTS_QUERY = `*[
+  _type == "product"
+  && defined(image)
+]|order(publishedAt desc){
+  _id,
+  title,
+  slug,
+  description,
+  price,
+  category,
+  image,
+  inStock,
+  featured,
+  publishedAt
+}`;
+
+export const PRODUCTS_BY_CATEGORY_QUERY = `*[
+  _type == "product"
+  && category == $category
+  && defined(image)
+]|order(publishedAt desc){
+  _id,
+  title,
+  slug,
+  description,
+  price,
+  category,
+  image,
+  inStock,
+  publishedAt
+}`;
