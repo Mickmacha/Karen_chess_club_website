@@ -1,18 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "nextjs-kcc_site/package.json",
-      "use": "@vercel/next"
-    },
-    {
-      "src": "studio-kcc_site/package.json", 
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
   "routes": [
     {
       "src": "/studio/(.*)",
@@ -22,5 +9,15 @@
       "src": "/(.*)",
       "dest": "/nextjs-kcc_site/$1"
     }
-  ]
+  ],
+  "projects": {
+    "nextjs-kcc_site": {
+      "root": "nextjs-kcc_site",
+      "ouput": ".next"
+    },
+    "studio-kcc_site": {
+      "root": "studio-kcc_site",
+      "output": "dist"
+    }
+  }
 }
