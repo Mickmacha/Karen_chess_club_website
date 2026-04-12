@@ -1,6 +1,6 @@
 // app/not-found.tsx
-import Layout from './components/Layout'
-import Link from 'next/link';
+import Layout from "./components/layout/Layout";
+import Link from "next/link";
 
 export default function NotFound() {
   return (

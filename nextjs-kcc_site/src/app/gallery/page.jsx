@@ -1,23 +1,8 @@
 import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
-import Gallery from '../components/Gallery';
-import Layout from '../components/Layout';
-
-const GALLERY_QUERY = `*[
-  _type == "gallery"
-  && defined(image)
-]|order(publishedAt desc){
-  _id,
-  title,
-  description,
-  category,
-  image,
-  "alt": image.alt,
-  "caption": image.caption,
-  featured,
-  tags,
-  publishedAt
-}`;
+import { GALLERY_QUERY } from "@/sanity/queries";
+import Gallery from "../components/sections/Gallery";
+import Layout from "../components/layout/Layout";
 
 const options = { next: { revalidate: 60 } };
 

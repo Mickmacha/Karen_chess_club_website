@@ -1,18 +1,14 @@
 import Link from "next/link";
 import { type SanityDocument } from "next-sanity";
 import { client } from "@/sanity/client";
+import { POSTS_PREVIEW_QUERY } from "@/sanity/queries";
 
-import Layout from './components/Layout'
-import Hero from './components/Hero'
-import About from './components/About'
-import Programs from './components/Programs'
-import { GalleryPreview } from './components/GalleryPreview'
-import Contact from './components/Contact'
-
-const POSTS_QUERY = `*[
-  _type == "post"
-  && defined(slug.current)
-]|order(publishedAt desc)[0...6]{_id, title, slug, publishedAt, excerpt}`;
+import Layout from "./components/layout/Layout";
+import Hero from "./components/sections/Hero";
+import About from "./components/sections/About";
+import Programs from "./components/sections/Programs";
+import { GalleryPreview } from "./components/sections/GalleryPreview";
+import Contact from "./components/sections/Contact";
 
 const options = { next: { revalidate: 30 } };
 
@@ -78,7 +74,7 @@ function BlogPreview({ posts }: { posts: SanityDocument[] }) {
 }
 
 export default async function IndexPage() {
-  const posts = await client.fetch<SanityDocument[]>(POSTS_QUERY, {}, options);
+  const posts = await client.fetch<SanityDocument[]>(POSTS_PREVIEW_QUERY, {}, options);
 
   return (
     <Layout>

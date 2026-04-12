@@ -1,4 +1,4 @@
-// components/Button.jsx
+// components/ui/Button.jsx
 export default function Button({ 
   children, 
   variant = 'primary', 

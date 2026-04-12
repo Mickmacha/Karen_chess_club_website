@@ -1,23 +1,10 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
-import Link from 'next/link';
-import Image from 'next/image';
-
-const FEATURED_GALLERY_QUERY = `*[
-  _type == "gallery"
-  && featured == true
-  && defined(image)
-]|order(publishedAt desc)[0...6]{
-  _id,
-  title,
-  description,
-  category,
-  image,
-  "alt": image.alt,
-  publishedAt
-}`;
+import { FEATURED_GALLERY_QUERY } from "@/sanity/queries";
+import Link from "next/link";
+import Image from "next/image";
 
 export function GalleryPreview() {
   const [isVisible, setIsVisible] = useState(false);

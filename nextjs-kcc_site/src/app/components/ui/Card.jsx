@@ -1,4 +1,4 @@
-// components/Card.jsx
+// components/ui/Card.jsx
 export default function Card({ children, className = '', hover = true }) {
   return (
     <div className={`

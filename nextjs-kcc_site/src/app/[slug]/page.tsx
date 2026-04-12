@@ -2,22 +2,11 @@
 import { type SanityDocument } from "next-sanity";
 import { client } from "@/sanity/client";
 import { urlFor } from "@/sanity/image";
+import { POST_BY_SLUG_QUERY } from "@/sanity/queries";
 import { notFound } from "next/navigation";
-import Layout from "../components/Layout";
-import Link from 'next/link';
-import Image  from 'next/image';
-const POST_QUERY = `*[
-  _type == "post" &&
-  slug.current == $slug
-][0]{
-  _id,
-  title,
-  slug,
-  publishedAt,
-  body,
-  image,
-  excerpt
-}`;
+import Layout from "../components/layout/Layout";
+import Link from "next/link";
+import Image from "next/image";
 
 const options = { next: { revalidate: 30 } };
 
@@ -28,8 +17,8 @@ export default async function PostPage({
 }) {
   const resolvedParams = await params;
   const post = await client.fetch<SanityDocument>(
-    POST_QUERY, 
-    { slug: resolvedParams.slug }, 
+    POST_BY_SLUG_QUERY,
+    { slug: resolvedParams.slug },
     options
   );
 
@@ -122,7 +111,7 @@ export async function generateMetadata({
 }) {
   const resolvedParams = await params;
   const post = await client.fetch<SanityDocument>(
-    POST_QUERY,
+    POST_BY_SLUG_QUERY,
     { slug: resolvedParams.slug },
     options
   );
