@@ -67,7 +67,7 @@ export default function Footer() {
             <p className="text-sm font-semibold text-white">Contact</p>
             <ul className="mt-4 space-y-2 text-sm text-slate-300">
               <li>Karen, Nairobi</li>
-              <li>+254 712 528 497</li>
+              <li>+254 746 842 144</li>
               <li>karenchessclub@gmail.com</li>
             </ul>
             <a

@@ -19,7 +19,7 @@ export default function Layout({ children }) {
       </main>
 
       <WhatsAppButton
-        phoneNumber="254712528497"
+        phoneNumber="254746842144"
         message="Hello, I would like to know more about Karen Chess Club programs."
       />
 
