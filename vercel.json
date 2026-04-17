@@ -6,7 +6,7 @@
       "use": "@vercel/next"
     },
     {
-      "src": "studio-kcc_site/package.json", 
+      "src": "studio-kcc_site/package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist"

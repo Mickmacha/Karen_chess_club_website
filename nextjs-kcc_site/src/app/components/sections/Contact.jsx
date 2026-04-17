@@ -150,8 +150,8 @@ export default function Contact() {
         </svg>
       ),
       title: 'Phone',
-      details: ['+254 712 528 497'],
-      link: 'tel:+254700123456'
+      details: ['+254 746 842 144'],
+      link: 'tel:+254746842144'
     },
     {
       icon: (
