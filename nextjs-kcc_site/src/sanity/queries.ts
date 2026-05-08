@@ -131,6 +131,7 @@ export const FEATURED_TOURNAMENTS_QUERY = `*[
   registrationDeadline,
   prizeFund,
   registrationOpen,
+  registrationUrl,
   image
 }`;
 
@@ -154,6 +155,7 @@ export const ALL_TOURNAMENTS_QUERY = `*[
   prizeFund,
   featured,
   registrationOpen,
+  registrationUrl,
   image
 }`;
 
@@ -176,5 +178,6 @@ export const TOURNAMENTS_BY_SECTION_QUERY = `*[
   entryFee,
   registrationDeadline,
   registrationOpen,
+  registrationUrl,
   image
 }`;

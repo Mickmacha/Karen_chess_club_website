@@ -29,6 +29,7 @@ interface Tournament {
   registrationDeadline: string;
   prizeFund?: string;
   registrationOpen: boolean;
+  registrationUrl?: string;
   image: any;
 }
 
@@ -107,6 +108,9 @@ export default function TournamentsContent({ tournaments = [] }: { tournaments: 
                 const isDeadlinePassed = isRegistrationClosed(tournament.registrationDeadline);
                 const canRegister = tournament.registrationOpen && !isFull && !isDeadlinePassed;
                 const availability = getAvailabilityPercentage(tournament.currentParticipants, tournament.maxParticipants);
+                const fallbackRegistrationHref = `/contact?tournament=${encodeURIComponent(tournament.title)}`;
+                const registrationHref = tournament.registrationUrl || fallbackRegistrationHref;
+                const usesExternalRegistration = Boolean(tournament.registrationUrl);
 
                 return (
                   <div
@@ -202,26 +206,33 @@ export default function TournamentsContent({ tournaments = [] }: { tournaments: 
                       </p>
 
                       {/* Registration Button */}
-                      <Link
-                        href={`/contact?tournament=${encodeURIComponent(tournament.title)}`}
-                        className={`block text-center px-4 py-3 rounded-lg font-medium text-sm transition-all duration-300 ${
-                          canRegister
-                            ? 'bg-orange-500 text-white hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/20'
-                            : isFull
-                            ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
+                      {canRegister ? (
+                        usesExternalRegistration ? (
+                          <a
+                            href={registrationHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block text-center px-4 py-3 rounded-lg font-medium text-sm transition-all duration-300 bg-orange-500 text-white hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/20"
+                          >
+                            Register Now
+                          </a>
+                        ) : (
+                          <Link
+                            href={registrationHref}
+                            className="block text-center px-4 py-3 rounded-lg font-medium text-sm transition-all duration-300 bg-orange-500 text-white hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/20"
+                          >
+                            Register Now
+                          </Link>
+                        )
+                      ) : (
+                        <span className="block text-center px-4 py-3 rounded-lg font-medium text-sm bg-slate-700 text-slate-400 cursor-not-allowed">
+                          {!tournament.registrationOpen
+                            ? 'Registration Closed'
                             : isDeadlinePassed
-                            ? 'bg-slate-700 text-slate-400 cursor-not-allowed'
-                            : 'bg-slate-700 text-slate-400 cursor-not-allowed'
-                        }`}
-                      >
-                        {!tournament.registrationOpen
-                          ? 'Registration Closed'
-                          : isDeadlinePassed
-                          ? 'Deadline Passed'
-                          : isFull
-                          ? 'Tournament Full'
-                          : 'Register Now'}
-                      </Link>
+                            ? 'Deadline Passed'
+                            : 'Tournament Full'}
+                        </span>
+                      )}
                     </div>
                   </div>
                 );

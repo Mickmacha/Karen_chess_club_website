@@ -16,6 +16,7 @@ interface Tournament {
   currentParticipants: number;
   entryFee: number;
   registrationOpen: boolean;
+  registrationUrl?: string;
   image: any;
 }
 
@@ -76,64 +77,83 @@ export default function TournamentBooking({ tournaments = [] }: { tournaments: T
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {tournaments.slice(0, 4).map((tournament) => {
             const availability = getAvailabilityPercentage(tournament.currentParticipants, tournament.maxParticipants);
+            const registrationHref = tournament.registrationUrl || `/contact?tournament=${encodeURIComponent(tournament.title)}`;
+            const usesExternalRegistration = Boolean(tournament.registrationUrl);
+            const cardClassName = 'group rounded-2xl border border-white/10 bg-white/5 overflow-hidden hover:border-orange-500/50 transition-all duration-300 hover:bg-white/10';
 
-            return (
-              <Link
-                key={tournament._id}
-                href={`/contact?tournament=${encodeURIComponent(tournament.title)}`}
-                className="group rounded-2xl border border-white/10 bg-white/5 overflow-hidden hover:border-orange-500/50 transition-all duration-300 hover:bg-white/10"
-              >
-                <div className="flex h-full">
-                  {/* Image - smaller on this preview */}
-                  <div className="relative w-32 h-32 sm:w-40 sm:h-40 flex-shrink-0 overflow-hidden bg-slate-900">
-                    <Image
-                      src={urlFor(tournament.image).width(200).height(200).url()}
-                      alt={tournament.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+            const cardContent = (
+              <div className="flex h-full">
+                {/* Image - smaller on this preview */}
+                <div className="relative w-32 h-32 sm:w-40 sm:h-40 flex-shrink-0 overflow-hidden bg-slate-900">
+                  <Image
+                    src={urlFor(tournament.image).width(200).height(200).url()}
+                    alt={tournament.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 flex flex-col p-4 sm:p-5">
+                  {/* Date and Section */}
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <span className="text-xs font-medium text-orange-300">
+                      {formatDate(tournament.date)}
+                    </span>
+                    <span className={`text-xs font-medium px-2 py-1 rounded border ${TOURNAMENT_SECTIONS[tournament.section] || TOURNAMENT_SECTIONS.open}`}>
+                      {SECTION_LABELS[tournament.section] || tournament.section}
+                    </span>
                   </div>
 
-                  {/* Content */}
-                  <div className="flex-1 flex flex-col p-4 sm:p-5">
-                    {/* Date and Section */}
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <span className="text-xs font-medium text-orange-300">
-                        {formatDate(tournament.date)}
-                      </span>
-                      <span className={`text-xs font-medium px-2 py-1 rounded border ${TOURNAMENT_SECTIONS[tournament.section] || TOURNAMENT_SECTIONS.open}`}>
-                        {SECTION_LABELS[tournament.section] || tournament.section}
-                      </span>
-                    </div>
+                  {/* Title */}
+                  <h3 className="font-display text-base sm:text-lg font-semibold text-slate-100 mb-1 line-clamp-2 group-hover:text-orange-300 transition-colors">
+                    {tournament.title}
+                  </h3>
 
-                    {/* Title */}
-                    <h3 className="font-display text-base sm:text-lg font-semibold text-slate-100 mb-1 line-clamp-2 group-hover:text-orange-300 transition-colors">
-                      {tournament.title}
-                    </h3>
+                  {/* Location */}
+                  <p className="text-xs text-slate-400 mb-2">📍 {tournament.location}</p>
 
-                    {/* Location */}
-                    <p className="text-xs text-slate-400 mb-2">📍 {tournament.location}</p>
+                  {/* Fee and Status */}
+                  <div className="flex items-center justify-between mt-auto text-xs">
+                    <span className="text-slate-300 font-semibold">KES {tournament.entryFee.toLocaleString()}</span>
+                    <span className={`${availability > 80 ? 'text-orange-400' : availability > 50 ? 'text-yellow-400' : 'text-green-400'}`}>
+                      {availability}% full
+                    </span>
+                  </div>
 
-                    {/* Fee and Status */}
-                    <div className="flex items-center justify-between mt-auto text-xs">
-                      <span className="text-slate-300 font-semibold">KES {tournament.entryFee.toLocaleString()}</span>
-                      <span className={`${availability > 80 ? 'text-orange-400' : availability > 50 ? 'text-yellow-400' : 'text-green-400'}`}>
-                        {availability}% full
-                      </span>
-                    </div>
-
-                    {/* Availability Bar */}
-                    <div className="mt-2 h-1 bg-white/10 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full transition-all duration-300 ${
-                          availability > 80 ? 'bg-orange-500' : availability > 50 ? 'bg-amber-500' : 'bg-emerald-500'
-                        }`}
-                        style={{ width: `${availability}%` }}
-                      ></div>
-                    </div>
+                  {/* Availability Bar */}
+                  <div className="mt-2 h-1 bg-white/10 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-300 ${
+                        availability > 80 ? 'bg-orange-500' : availability > 50 ? 'bg-amber-500' : 'bg-emerald-500'
+                      }`}
+                      style={{ width: `${availability}%` }}
+                    ></div>
                   </div>
                 </div>
-              </Link>
+              </div>
+            );
+
+            return (
+              usesExternalRegistration ? (
+                <a
+                  key={tournament._id}
+                  href={registrationHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cardClassName}
+                >
+                  {cardContent}
+                </a>
+              ) : (
+                <Link
+                  key={tournament._id}
+                  href={registrationHref}
+                  className={cardClassName}
+                >
+                  {cardContent}
+                </Link>
+              )
             );
           })}
         </div>

@@ -115,6 +115,13 @@ export const tournamentType = defineType({
       initialValue: true,
     }),
     defineField({
+      name: 'registrationUrl',
+      title: 'Registration Link',
+      type: 'url',
+      description: 'External registration form URL (https://...)',
+      validation: (rule) => rule.uri({allowRelative: false, scheme: ['http','https']}),
+    }),
+    defineField({
       name: 'publishedAt',
       type: 'datetime',
       initialValue: () => new Date().toISOString(),
