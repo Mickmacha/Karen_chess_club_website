@@ -2,7 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/sanity/image";
 
-export function GalleryPreview({ images = [] }) {
+interface GalleryImage {
+  _id: string;
+  title: string;
+  description?: string;
+  category: string;
+  image: any;
+  alt: string;
+  publishedAt: string;
+}
+
+export function GalleryPreview({ images = [] }: { images: GalleryImage[] }) {
   if (images.length === 0) return null;
 
   return (

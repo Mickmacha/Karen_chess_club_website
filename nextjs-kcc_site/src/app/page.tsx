@@ -13,6 +13,32 @@ import Contact from "./components/sections/Contact";
 
 const options = { next: { revalidate: 30 } };
 
+interface GalleryImage {
+  _id: string;
+  title: string;
+  description?: string;
+  category: string;
+  image: any;
+  alt: string;
+  publishedAt: string;
+}
+
+interface Tournament {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  date: string;
+  time: string;
+  location: string;
+  section: string;
+  maxParticipants: number;
+  currentParticipants: number;
+  entryFee: number;
+  registrationOpen: boolean;
+  registrationUrl?: string;
+  image: any;
+}
+
 // Blog Preview Section Component
 function BlogPreview({ posts }: { posts: SanityDocument[] }) {
   if (posts.length === 0) return null;
@@ -80,12 +106,12 @@ function BlogPreview({ posts }: { posts: SanityDocument[] }) {
 
 export default async function IndexPage() {
   const posts = await client.fetch<SanityDocument[]>(POSTS_PREVIEW_QUERY, {}, options);
-  const featuredImages = await client.fetch<SanityDocument[]>(
+  const featuredImages = await client.fetch<GalleryImage[]>(
     FEATURED_GALLERY_QUERY,
     {},
     options
   );
-  const featuredTournaments = await client.fetch<SanityDocument[]>(
+  const featuredTournaments = await client.fetch<Tournament[]>(
     FEATURED_TOURNAMENTS_QUERY,
     {},
     options

@@ -14,7 +14,20 @@ const PRODUCT_CATEGORIES = [
   { label: 'Merchandise', value: 'merchandise' },
 ];
 
-export default function StoreContent({ products = [] }) {
+interface Product {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  description?: string;
+  price: number;
+  category: string;
+  image: any;
+  inStock: boolean;
+  featured?: boolean;
+  publishedAt: string;
+}
+
+export default function StoreContent({ products = [] }: { products: Product[] }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const filteredProducts = useMemo(() => {
